@@ -154,4 +154,10 @@ router.get('/:term', function(req, res, next) {
     
 });
 
+router.get('/', function(req, res, next) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end('Now add a search term to the end of the URL in the address bar');
+
+})
+
 module.exports = router;
