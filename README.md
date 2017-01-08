@@ -19,3 +19,7 @@ eg) `https://img-abstraction-layer-jb-ps-bizzel.c9users.io/api/cats?page=2`
 To limit the results use **pagelimit** in the query string
 
 eg) `https://img-abstraction-layer-jb-ps-bizzel.c9users.io/api/cats?page=2&pagelimit=5`
+
+For the last 10 searches made:
+
+`https://img-abstraction-layer-jb-ps-bizzel.c9users.io/api/recent`
