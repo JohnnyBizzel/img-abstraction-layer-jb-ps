@@ -6,20 +6,20 @@ We decided to use the flickr API as I have previously used this for the Weather 
 The format is slightly different from other APIs.
 
 The API is called by using
-`https://img-abstraction-layer-jb-ps-bizzel.c9users.io/api/`
+`https://img-abstraction-layer-jb-ps.herokuapp.com/api/`
 
 then adding a **search term**
 
-eg) `https://img-abstraction-layer-jb-ps-bizzel.c9users.io/api/cats`
+eg) `https://img-abstraction-layer-jb-ps.herokuapp.com/api/cats`
 
 To show another **page** of results use query strings
 
-eg) `https://img-abstraction-layer-jb-ps-bizzel.c9users.io/api/cats?page=2`
+eg) `https://img-abstraction-layer-jb-ps.herokuapp.com/api/cats?page=2`
 
 To limit the results use **pagelimit** in the query string
 
-eg) `https://img-abstraction-layer-jb-ps-bizzel.c9users.io/api/cats?page=2&pagelimit=5`
+eg) `https://img-abstraction-layer-jb-ps.herokuapp.com/api/cats?page=2&pagelimit=5`
 
 For the last 10 searches made:
 
-`https://img-abstraction-layer-jb-ps-bizzel.c9users.io/api/recent`
+`https://img-abstraction-layer-jb-ps.herokuapp.com/api/recent`
