@@ -28,9 +28,8 @@ function readHistory(res) {
             console.log(err);
             //throw err;
         }
-        content = data;
         // Invoke the next step 
-        processFile(content);         
+        processFile(data);         
     });
     
     function processFile(fileContent) {
