@@ -22,4 +22,4 @@ eg) `https://img-abstraction-layer-jb-ps.herokuapp.com/api/cats?page=2&pagelimit
 
 For the last 10 searches made:
 
-`https://img-abstraction-layer-jb-ps.herokuapp.com/api/recent`
+`https://img-abstraction-layer-jb-ps.herokuapp.com/recent`

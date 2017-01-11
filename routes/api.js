@@ -20,39 +20,9 @@ function callAjax(url, callback){
     xmlhttp.send();
 }
 
-function readHistory(res) {
-    var content;
-    // First I want to read the file
-    fs.readFile('./history.json', 'UTF-8',  function read(err, data) {
-        if (err) {
-            console.log(err);
-            //throw err;
-        }
-        // Invoke the next step 
-        processFile(data);         
-    });
-    
-    function processFile(fileContent) {
-        
-        res.send(fileContent);
-    }
-}
-
 function updateRecentHistory(searched) {
-    console.log('upd hist: ' + searched);
     var content  = JSON.parse(fs.readFileSync('./history.json', 'utf8'));
-    // First I want to read the file
-    // fs.readFileSync('./history.json', 'utf8',  function read(err, data) {
-    //     if (err) {
-    //         console.log(err);
-    //         //throw err;
-    //     }
-    //     content = JSON.parse(data);
-    //     // Invoke the next step 
-    //     console.log(content);
-        
-    // });
-    
+
     var updatedHistory = [];
    // updatedHistory.push(content);
     var nowDate = new Date();
@@ -66,68 +36,35 @@ function updateRecentHistory(searched) {
                 console.log(err);
                 //throw err;
             }
-    	console.log("File Created @ " + Date.now());
-    
     });
 }
 
-
-// Read local history file
-router.get('/recent', function(req, res, next) {
-    // TODO Catch error
-    console.log('reading');
-    var content;
-    // First I want to read the file
-    fs.readFile('./history.json', 'UTF-8',  function read(err, data) {
-        if (err) {
-            console.log(err);
-            //throw err;
-        }
-        content = data;
-        // Invoke the next step 
-        processFile(content);         
-    });
+function url (term, query, pagelimit) {
+    var apikey = process.env.FLICKR_KEY;
+    var page = 1;
     
-    function processFile(fileContent) {
-        
-        res.send(fileContent);
+    if (query && query.page !== undefined) {
+        page = query.page;
     }
-
-})
+    
+    return 'https://api.flickr.com/services/rest/?method=flickr.photos.search&page='+
+                page+'&per_page=' + pagelimit + '&api_key=' + 
+                apikey + '&accuracy=1&tags=' +term+ '&sort=relevance&extras=url_l,url_sq&format=json';
+}
 
 
 /* GET users listing. */
 router.get('/:term', function(req, res, next) {
-    
-    var searchTerm = req.params.term;
-    
-    var apikey = process.env.FLICKR_KEY;
     var pagelimit = 10;
-    var query = req.query;
-    var page = 1;
-    if (req.query && req.query.page !== undefined) {
-        page = req.query.page;
-    }
-
     if (req.query && req.query.pagelimit !== undefined) {
         pagelimit = req.query.pagelimit;
     }
-    
-    var url= 'https://api.flickr.com/services/rest/?method=flickr.photos.search&page='+page+'&per_page=' + pagelimit + '&api_key=' + apikey + '&accuracy=1&tags=' +searchTerm+ '&sort=relevance&extras=url_l,url_sq&format=json';
-    
-    var obj = {
-        snippet: "",
-        url: "",
-        context: "",
-        thumbnail: ""
-    };
-    var resultArray = [];
-    
-    callAjax(url, function(data){
+    callAjax(url(req.params.term, req.query, pagelimit), function(data){
         
-        
+        var obj = {};
+        var resultArray = [];
         var json = eval( "(" + data.substr(13) + ")" );
-        console.log(JSON.stringify(json).substr(0, 400)); 
+        
         if (!json.photos.photo.length > 0) {
             console.log("No data");
             res.writeHead(200, {'Content-Type': 'text/plain'});
@@ -138,17 +75,16 @@ router.get('/:term', function(req, res, next) {
             
         for (var i = 0; i < pagelimit; i++) {
             var jObj = json.photos.photo[i];
-            
+        
             obj.url = jObj['url_l'];
             obj.snippet = jObj['title'];
             obj.thumbnail = jObj['url_sq'];
             obj.context = 'http://www.flickr.com/photos/' + jObj['owner']+ '/'+jObj['id'];
             resultArray.push(Object.assign({}, obj));
         }
-        updateRecentHistory(searchTerm);
+        updateRecentHistory(req.params.term);
         res.send(resultArray);
-        // res.send(json.photos.photo[0]['title']);
-        
+  
     })
     
 });
