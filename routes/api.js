@@ -6,7 +6,6 @@ var moment = require("moment");
 var dotenv = require('dotenv');
 dotenv.load();
 
-
 function callAjax(url, callback){
     var xmlhttp;
     // compatible with IE7+, Firefox, Chrome, Opera, Safari
